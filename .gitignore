@@ -1,0 +1,64 @@
+# vim-session
+.session.vim*
+
+# local Terraform modules
+modules/*
+
+### https://raw.github.com/github/gitignore/0a37e32c1d9914e9e5135e90faef42c75f8c5d2a/Global/Vim.gitignore
+
+# swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
+
+
+### https://raw.github.com/github/gitignore/0a37e32c1d9914e9e5135e90faef42c75f8c5d2a/Global/macOS.gitignore
+
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+### https://raw.github.com/github/gitignore/9385cd828876076f3c11ad1daa9ef4e5df1a5689/Terraform.gitignore
+
+# Compiled files
+*.tfstate
+*.tfstate.*.backup
+*.tfstate.backup
+
+# Module directory
+.terraform/
+
+# Variable values for development
+terraform.tfvars
+
