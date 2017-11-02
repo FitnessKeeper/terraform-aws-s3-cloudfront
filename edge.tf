@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   is_ipv6_enabled     = "${var.cloudfront_ipv6_enabled}"
   comment             = "${var.cloudfront_comment}"
   default_root_object = "${var.cloudfront_default_root_object}"
-  aliases             = "${var.cloudfront_aliases}"
+  aliases             = ["${compact(distinct(concat(list(var.cloudfront_fqdn),var.cloudfront_aliases)))}"]
   price_class         = "${var.cloudfront_price_class}"
 
   default_cache_behavior {
@@ -59,7 +59,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
     viewer_protocol_policy = "${var.cloudfront_default_cache_viewer_protocol_policy}"
 
     forwarded_values {
-      query_string = "${var.cloudfront_default_cache_forwarded_values}"
+      query_string = "${var.cloudfront_default_cache_forwarded_values_query_string}"
 
       cookies {
         forward = "${var.cloudfront_default_cache_forwarded_cookies}"
@@ -74,23 +74,19 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = "${data.aws_acm_certificate.cert.arn}"
-    minimum_protocol_version = "${var.cloudfront_viewer_cert_min_supported_version}"
-    ssl_support_method       = "${var.cloudfront_viewer_cert_ssl_support_method}"
+    acm_certificate_arn      = "${data.aws_acm_certificate.cloudfront.arn}"
+    minimum_protocol_version = "${var.cloudfront_cert_min_supported_version}"
+    ssl_support_method       = "${var.cloudfront_cert_ssl_support_method}"
   }
 }
 
 
 # outputs from edge tier
 
-output "cloudfront_fqdn" {
+output "cloudfront_domain_name" {
   value = "${aws_cloudfront_distribution.cloudfront.domain_name}"
 }
 
-output "cloudfront_a_record" {
-  value = "${aws_route53_record.cloudfront_a.fqdn}"
-}
-
-output "cloudfront_s3_bucket_source_path" {
-  value = "${aws_s3_bucket.bucket.bucket_domain_name}/${var.cloudfront_origin_path}"
+output "cloudfront_id" {
+  value = "${aws_cloudfront_distribution.cloudfront.id}"
 }

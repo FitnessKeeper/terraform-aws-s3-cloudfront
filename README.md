@@ -1,20 +1,50 @@
-tf_aws_ecs_service
+tf_aws_s3_cloudfront
 ===========
 
-Terraform module for deploying and managing a CloudFront web distribution backed by an S3 bucket.
+Terraform module for deploying and managing a CloudFront web distribution backed by an S3 bucket. Also adds Route 53 A records to the CloudFront distribution.
 
 ----------------------
 #### Required
 
-- bucket_name
-- bucket_cors_allowed_origins
-- cloudfront_fqdn
-- dns_toplevel_zone
-- cloudfront_viewer_acm_cert_domain
-- region
-- short_name
+- bucket_name                (name for the S3 bucket to be created)
+- s3_region                  (region for the S3 bucket)
+- cloudfront_fqdn            (Route 53 record to create to the CloudFront)
+- cloudfront_acm_cert_domain (existing ACM Certificate domain to use on CloudFront)
+- route53_toplevel_zone      (existing top-level DNS domain for the Route53 record)
+
+* Note if you do not want Route 53 records created pointing to the cloudfront distribution you can optionally not pass in cloudfront_fqdn. In this case you must specify cloudfront_aliases.
 
 #### Optional
+
+Optional value                                            Default
+
+- iam_policy_resources_path                               "/*"
+- bucket_acl                                              "private"
+- bucket_force_destroy                                    false
+- bucket_cors_allowed_headers                             ["*"]
+- bucket_cors_extra_allowed_origins                       []
+- bucket_cors_expose_headers                              ["ETag"]
+- bucket_cors_max_age_seconds                             3000
+- cloudfront_origin_path                                  ""
+- cloudfront_comment                                      ""
+- cloudfront_default_root_object                          "index.html"
+- cloudfront_aliases                                      []
+- cloudfront_price_class                                  "PriceClass_All"
+- cloudfront_default_cache_allowed_methods
+                ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+- cloudfront_default_cache_cached_methods                 ["GET", "HEAD"]
+- cloudfront_default_cache_compress                       true
+- cloudfront_default_cache_default_ttl                    0
+- cloudfront_default_cache_max_ttl                        0
+- cloudfront_default_cache_min_ttl                        0
+- cloudfront_default_cache_viewer_protocol_policy         "redirect-to-https"
+- cloudfront_default_cache_forwarded_values_query_string  false
+- cloudfront_default_cache_forwarded_cookies              "all"
+- cloudfront_geo_restriction_type                         "none"
+- cloudfront_cert_min_supported_version                   "TLSv1"
+- cloudfront_cert_ssl_support_method                      "sni-only"
+- cloudfront_enabled                                      true
+- cloudfront_ipv6_enabled                                 true
 
 Usage
 -----
@@ -22,24 +52,20 @@ Usage
 ```hcl
 
 module "static_web" {
-  source                            = "github.com/terraform-community-modules/tf_aws_s3_cloudfront?ref=v0.0.1"
-  region                            = "${data.aws_region.current.name}"
-  bucket_name                       = "static-bucket"
-  bucket_cors_allowed_origins       = ["static.mydomain.com"]
+  source                            = "github.com/terraform-community-modules/tf_aws_s3_cloudfront?ref=v0.0.3"
+  bucket_name                       = "static-bucket-mydomain"
+  s3_region                         = "${data.aws_region.current.name}"
   cloudfront_fqdn                   = "static.mydomain.com"
-  dns_toplevel_zone                 = "mydomain.com"
-  cloudfront_viewer_acm_cert_domain = "mydomain.com"
-  short_name                        = "static-mydomain"
+  cloudfront_acm_cert_domain        = "mydomain.com"
+  route53_toplevel_domain           = "mydomain.com"
 }
 ```
 
 Outputs
 =======
 
-- S3 bucket domain name
-- CloudFront FQDN
-- CloudFront A record
-- CloudFront S3 bucket source path
+- cloudfront_domain_name
+- cloudfront_zone_id
 
 Authors
 =======

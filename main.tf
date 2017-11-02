@@ -1,21 +1,31 @@
 # MAIN
 
 provider "aws" {
-  alias   = "provided"
+  alias   = "us-east-1"
   profile = "${var.aws_profile}"
   region  = "us-east-1"
 }
 
-data "aws_region" "region" {
+provider "aws" {
+  alias   = "s3"
+  profile = "${var.aws_profile}"
+  region  = "${var.s3_region}"
+}
+
+data "aws_region" "us-east-1" {
   name = "us-east-1"
 }
 
-data "aws_route53_zone" "zone" {
-  name = "${var.dns_toplevel_zone}."
+data "aws_region" "s3_region" {
+  name = "${var.s3_region}"
 }
 
-data "aws_acm_certificate" "cert" {
-  provider = "aws.provided"
-  domain   = "${var.cloudfront_viewer_acm_cert_domain}"
+data "aws_route53_zone" "zone" {
+  name = "${var.route53_toplevel_zone}."
+}
+
+data "aws_acm_certificate" "cloudfront" {
+  provider = "aws.us-east-1"
+  domain   = "${var.cloudfront_acm_cert_domain}"
   statuses = ["ISSUED"]
 }

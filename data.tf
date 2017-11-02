@@ -25,16 +25,17 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 }
 
 resource "aws_s3_bucket" "bucket" {
+  provider      = "aws.s3"
   bucket        = "${var.bucket_name}"
   acl           = "${var.bucket_acl}"
-  region        = "${data.aws_region.region.name}"
+  region        = "${data.aws_region.s3_region.name}"
   force_destroy = "${var.bucket_force_destroy}"
   policy        = "${data.aws_iam_policy_document.bucket_policy_document.json}"
 
   cors_rule {
     allowed_headers = "${var.bucket_cors_allowed_headers}"
     allowed_methods = "${var.bucket_cors_allowed_methods}"
-    allowed_origins = "${var.bucket_cors_allowed_origins}"
+    allowed_origins = ["${compact(distinct(concat(list(var.cloudfront_fqdn), var.cloudfront_aliases, var.bucket_cors_extra_allowed_origins)))}"]
     expose_headers  = "${var.bucket_cors_expose_headers}"
     max_age_seconds = "${var.bucket_cors_max_age_seconds}"
   }
@@ -42,7 +43,3 @@ resource "aws_s3_bucket" "bucket" {
 
 
 # outputs from data tier
-
-output "s3_bucket_domain_name" {
-  value = "${aws_s3_bucket.bucket.bucket_domain_name}"
-}
