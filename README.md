@@ -18,9 +18,9 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 
 #### Optional
 
+```
 Optional value                                            Default
 
-```
 - iam_policy_resources_path                               "/*"
 - bucket_acl                                              "private"
 - bucket_force_destroy                                    false
