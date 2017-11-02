@@ -1,6 +1,7 @@
 # Edge - Route 53 and CloudFront
 
 resource "aws_route53_record" "cloudfront_a" {
+  count   = "${(var.cloudfront_fqdn != "") ? 1 : 0}"
   zone_id = "${data.aws_route53_zone.zone.zone_id}"
   name    = "${var.cloudfront_fqdn}"
   type    = "A"
@@ -13,6 +14,7 @@ resource "aws_route53_record" "cloudfront_a" {
 }
 
 resource "aws_route53_record" "cloudfront_aaaa" {
+  count   = "${(var.cloudfront_fqdn != "") ? 1 : 0}"
   zone_id = "${data.aws_route53_zone.zone.zone_id}"
   name    = "${var.cloudfront_fqdn}"
   type    = "AAAA"
@@ -25,7 +27,7 @@ resource "aws_route53_record" "cloudfront_aaaa" {
 }
 
 resource "aws_cloudfront_origin_access_identity" "identity" {
-  comment = "CloudFront access to S3 bucket ${var.bucket_fqdn}"
+  comment = "CloudFront access to S3 bucket ${var.bucket_name}"
 }
 
 resource "aws_cloudfront_distribution" "cloudfront" {
@@ -81,14 +83,14 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
 # outputs from edge tier
 
-output "CloudFront FQDN" {
+output "cloudfront_fqdn" {
   value = "${aws_cloudfront_distribution.cloudfront.domain_name}"
 }
 
-output "CloudFront A record" {
+output "cloudfront_a_record" {
   value = "${aws_route53_record.cloudfront_a.fqdn}"
 }
 
-output "CloudFront S3 bucket source path" {
+output "cloudfront_s3_bucket_source_path" {
   value = "${aws_s3_bucket.bucket.bucket_domain_name}/${var.cloudfront_origin_path}"
 }

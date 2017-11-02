@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   statement {
     sid       = "1"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.bucket_fqdn}{$var.iam_policy_resources_path}"]
+    resources = ["arn:aws:s3:::${var.bucket_name}${var.iam_policy_resources_path}"]
 
     principals {
       type        = "AWS"
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   statement {
     sid       = "2"
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${var.bucket_fqdn}"]
+    resources = ["arn:aws:s3:::${var.bucket_name}"]
 
     principals {
       type        = "AWS"
@@ -24,14 +24,8 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   }
 }
 
-resource "aws_iam_policy" "bucket_policy" {
-  name_prefix = "${var.short_name}"
-  path        = "${var.iam_policy_path}"
-  policy      = "${data.aws_iam_policy_document.bucket_policy_document.json}"
-}
-
 resource "aws_s3_bucket" "bucket" {
-  bucket        = "${var.bucket_fqdn}"
+  bucket        = "${var.bucket_name}"
   acl           = "${var.bucket_acl}"
   region        = "${data.aws_region.region.name}"
   force_destroy = "${var.bucket_force_destroy}"
@@ -49,6 +43,6 @@ resource "aws_s3_bucket" "bucket" {
 
 # outputs from data tier
 
-output "S3 bucket domain name" {
+output "s3_bucket_domain_name" {
   value = "${aws_s3_bucket.bucket.bucket_domain_name}"
 }

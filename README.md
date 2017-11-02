@@ -6,7 +6,7 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 ----------------------
 #### Required
 
-- bucket_fqdn
+- bucket_name
 - bucket_cors_allowed_origins
 - cloudfront_fqdn
 - dns_toplevel_zone
@@ -24,7 +24,7 @@ Usage
 module "static_web" {
   source                            = "github.com/terraform-community-modules/tf_aws_s3_cloudfront?ref=v0.0.1"
   region                            = "${data.aws_region.current.name}"
-  bucket_fqdn                       = "static-bucket.mydomain.com"
+  bucket_name                       = "static-bucket"
   bucket_cors_allowed_origins       = ["static.mydomain.com"]
   cloudfront_fqdn                   = "static.mydomain.com"
   dns_toplevel_zone                 = "mydomain.com"

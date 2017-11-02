@@ -3,11 +3,11 @@
 provider "aws" {
   alias   = "provided"
   profile = "${var.aws_profile}"
-  region  = "${var.region}"
+  region  = "us-east-1"
 }
 
 data "aws_region" "region" {
-  name = "${var.region}"
+  name = "us-east-1"
 }
 
 data "aws_route53_zone" "zone" {
