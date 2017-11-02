@@ -43,6 +43,6 @@ resource "aws_s3_bucket" "bucket" {
 
 # outputs from data tier
 
-output "S3 bucket domain name" {
+output "s3_bucket_domain_name" {
   value = "${aws_s3_bucket.bucket.bucket_domain_name}"
 }

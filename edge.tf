@@ -83,14 +83,14 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
 # outputs from edge tier
 
-output "CloudFront FQDN" {
+output "cloudfront_fqdn" {
   value = "${aws_cloudfront_distribution.cloudfront.domain_name}"
 }
 
-output "CloudFront A record" {
+output "cloudfront_a_record" {
   value = "${aws_route53_record.cloudfront_a.fqdn}"
 }
 
-output "CloudFront S3 bucket source path" {
+output "cloudfront_s3_bucket_source_path" {
   value = "${aws_s3_bucket.bucket.bucket_domain_name}/${var.cloudfront_origin_path}"
 }
