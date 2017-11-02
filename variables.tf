@@ -30,10 +30,6 @@ variable "dns_toplevel_zone" {
   type        = "string"
 }
 
-variable "iam_policy_path" {
-  default = ""
-}
-
 variable "iam_policy_resources_path" {
   description = "path inside bucket for policy, default /*"
   default = "/*"

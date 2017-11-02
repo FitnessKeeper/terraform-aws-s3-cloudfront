@@ -24,12 +24,6 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   }
 }
 
-resource "aws_iam_policy" "bucket_policy" {
-  name_prefix = "${var.short_name}"
-  path        = "${var.iam_policy_path}"
-  policy      = "${data.aws_iam_policy_document.bucket_policy_document.json}"
-}
-
 resource "aws_s3_bucket" "bucket" {
   bucket        = "${var.bucket_name}"
   acl           = "${var.bucket_acl}"
