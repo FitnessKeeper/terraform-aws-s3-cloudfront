@@ -14,7 +14,7 @@ variable "short_name" {
   type = "string"
 }
 
-variable "bucket_fqdn" {
+variable "bucket_name" {
   description = "Full name for S3 bucket"
   type = "string"
 }
@@ -22,6 +22,7 @@ variable "bucket_fqdn" {
 variable "cloudfront_fqdn" {
   description = "FQDN for the cloudfront distribution"
   type = "string"
+  default = ""
 }
 
 variable "dns_toplevel_zone" {
