@@ -6,11 +6,13 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 ----------------------
 #### Required
 
+```
 - bucket_name                (name for the S3 bucket to be created)
 - s3_region                  (region for the S3 bucket)
 - cloudfront_fqdn            (Route 53 record to create to the CloudFront)
 - cloudfront_acm_cert_domain (existing ACM Certificate domain to use on CloudFront)
 - route53_toplevel_zone      (existing top-level DNS domain for the Route53 record)
+```
 
 * Note if you do not want Route 53 records created pointing to the cloudfront distribution you can optionally not pass in cloudfront_fqdn. In this case you must specify cloudfront_aliases.
 
@@ -18,6 +20,7 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 
 Optional value                                            Default
 
+```
 - iam_policy_resources_path                               "/*"
 - bucket_acl                                              "private"
 - bucket_force_destroy                                    false
@@ -45,6 +48,7 @@ Optional value                                            Default
 - cloudfront_cert_ssl_support_method                      "sni-only"
 - cloudfront_enabled                                      true
 - cloudfront_ipv6_enabled                                 true
+```
 
 Usage
 -----
