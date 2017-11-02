@@ -1,4 +1,4 @@
-tf_aws_s3_cloudfront
+terraform-aws-s3-cloudfront
 ===========
 
 Terraform module for deploying and managing a CloudFront web distribution backed by an S3 bucket. Also adds Route 53 A records to the CloudFront distribution.
@@ -52,7 +52,7 @@ Usage
 ```hcl
 
 module "static_web" {
-  source                            = "github.com/terraform-community-modules/tf_aws_s3_cloudfront?ref=v0.0.3"
+  source                            = "github.com/FitnessKeeper/terraform-aws-s3-cloudfront?ref=v0.0.3"
   bucket_name                       = "static-bucket-mydomain"
   s3_region                         = "${data.aws_region.current.name}"
   cloudfront_fqdn                   = "static.mydomain.com"
