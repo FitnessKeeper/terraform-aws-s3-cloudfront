@@ -4,19 +4,14 @@ variable "aws_profile" {
   default     = "default"
 }
 
-variable "region" {
-  type        = "string"
-  description = "AWS region"
-}
-
-variable "short_name" {
-  description = "Short name to be used for name prefix for backend resources"
-  type = "string"
-}
-
 variable "bucket_name" {
   description = "Full name for S3 bucket"
   type = "string"
+}
+
+variable "s3_region" {
+  type        = "string"
+  description = "AWS region for S3 bucket"
 }
 
 variable "cloudfront_fqdn" {
@@ -25,7 +20,12 @@ variable "cloudfront_fqdn" {
   default = ""
 }
 
-variable "dns_toplevel_zone" {
+variable "cloudfront_acm_cert_domain" {
+  description = "ACM domain to lookup for cert for cloudfront web distribution"
+  type = "string"
+}
+
+variable "route53_toplevel_zone" {
   description = "The top level zone for DNS"
   type        = "string"
 }
@@ -51,8 +51,9 @@ variable "bucket_cors_allowed_methods" {
   default = ["GET", "HEAD"]
 }
 
-variable "bucket_cors_allowed_origins" {
+variable "bucket_cors_extra_allowed_origins" {
   type = "list"
+  default = []
 }
 
 variable "bucket_cors_expose_headers" {
@@ -118,7 +119,8 @@ variable "cloudfront_default_cache_viewer_protocol_policy" {
   default = "redirect-to-https"
 }
 
-variable "cloudfront_default_cache_forwarded_values" {
+variable "cloudfront_default_cache_forwarded_values_query_string" {
+  description = "Indicates whether you want CloudFront to forward query strings to the origin that is associated with this cache behavior."
   default = false
 }
 
@@ -130,16 +132,11 @@ variable "cloudfront_geo_restriction_type" {
   default = "none"
 }
 
-variable "cloudfront_viewer_acm_cert_domain" {
-  description = "ACM domain to lookup for cert for cloudfront web distribution"
-  type = "string"
-}
-
-variable "cloudfront_viewer_cert_min_supported_version" {
+variable "cloudfront_cert_min_supported_version" {
   default = "TLSv1"
 }
 
-variable "cloudfront_viewer_cert_ssl_support_method" {
+variable "cloudfront_cert_ssl_support_method" {
   default = "sni-only"
 }
 
