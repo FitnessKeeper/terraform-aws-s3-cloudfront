@@ -1,6 +1,13 @@
 # Data tier - S3
 
+
+resource "aws_cloudfront_origin_access_identity" "identity" {
+  count = "${var.create_bucket ? 1 : 0}"
+  comment = "CloudFront access to S3 bucket ${var.bucket_name}"
+}
+
 data "aws_iam_policy_document" "bucket_policy_document" {
+  count = "${var.create_bucket ? 1 : 0}"
   statement {
     sid       = "1"
     actions   = ["s3:GetObject"]
@@ -25,6 +32,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 }
 
 resource "aws_s3_bucket" "bucket" {
+  count = "${var.create_bucket ? 1 : 0}"
   provider      = "aws.s3"
   bucket        = "${var.bucket_name}"
   acl           = "${var.bucket_acl}"
@@ -43,3 +51,7 @@ resource "aws_s3_bucket" "bucket" {
 
 
 # outputs from data tier
+
+output "cloudfront_origin_access_identity_path" {
+  value = "${aws_cloudfront_origin_access_identity.identity.cloudfront_access_identity_path}"
+}

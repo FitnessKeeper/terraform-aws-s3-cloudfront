@@ -16,11 +16,15 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 
 * Note if you do not want Route 53 records created pointing to the cloudfront distribution you can optionally not pass in cloudfront_fqdn. In this case you must specify cloudfront_aliases.
 
+* Note if you do not want to create/manage the S3 bucket (such as for the use case of having multiple CloudFront distributions sourced from different paths of the same S3 bucket), pass `create_bucket = false` (see below for details).
+
 #### Optional
 
 ```
 Optional value                                            Default
 
+- create_bucket                                           true
+- cloudfront_origin_access_identity_path                  ""
 - iam_policy_resources_path                               "/*"
 - bucket_acl                                              "private"
 - bucket_force_destroy                                    false
@@ -56,7 +60,7 @@ Usage
 ```hcl
 
 module "static_web" {
-  source                            = "github.com/FitnessKeeper/terraform-aws-s3-cloudfront?ref=v0.0.3"
+  source                            = "github.com/FitnessKeeper/terraform-aws-s3-cloudfront?ref=v0.0.4"
   bucket_name                       = "static-bucket-mydomain"
   s3_region                         = "${data.aws_region.current.name}"
   cloudfront_fqdn                   = "static.mydomain.com"
@@ -65,9 +69,41 @@ module "static_web" {
 }
 ```
 
+* Note if you do not want to create/manage the S3 bucket (such as for the use case of having multiple CloudFront distributions sourced from different paths of the same S3 bucket), set `create_bucket = false`. You will then need to pass in the `cloudfront_origin_access_identity_path` to the one created when you set up your S3 bucket (all CloudFronts pointing to this bucket must use same CloudFront Origin Access Identity). You should also setup CORS on the S3 bucket to allow all of the domains for the additional CloudFront distributions.
+
+```hcl
+
+module "static_main" {
+  source                            = "github.com/FitnessKeeper/terraform-aws-s3-cloudfront?ref=v0.0.4"
+  bucket_name                       = "static-bucket-mydomain"
+  cloudfront_origin_path            = "/static_main"
+  bucket_cors_extra_allowed_origins = ["*.mydomain.com"]
+  s3_region                         = "${data.aws_region.current.name}"
+  cloudfront_fqdn                   = "static.mydomain.com"
+  cloudfront_acm_cert_domain        = "mydomain.com"
+  route53_toplevel_domain           = "mydomain.com"
+}
+
+module "static2" {
+  source                                 = "github.com/FitnessKeeper/terraform-aws-s3-cloudfront?ref=v0.0.4"
+  bucket_name                            = "static-bucket-mydomain"
+  cloudfront_origin_path                 = "/static2"
+  create_bucket                          = false
+  cloudfront_origin_access_identity_path = "${module.static_main.cloudfront_origin_access_identity_path}"
+  s3_region                              = "${data.aws_region.current.name}"
+  cloudfront_fqdn                        = "static2.mydomain.com"
+  cloudfront_acm_cert_domain             = "mydomain.com"
+  route53_toplevel_domain                = "mydomain.com"
+}
+
+```
+
+
+
 Outputs
 =======
 
+- cloudfront_origin_access_identity_path
 - cloudfront_domain_name
 - cloudfront_zone_id
 
@@ -80,6 +116,7 @@ Changelog
 =========
 
 0.0.1 - Initial version.
+0.0.4 - Allow not creating/managing the S3 bucket.
 
 License
 =======

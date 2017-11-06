@@ -29,3 +29,8 @@ data "aws_acm_certificate" "cloudfront" {
   domain   = "${var.cloudfront_acm_cert_domain}"
   statuses = ["ISSUED"]
 }
+
+locals {
+  bucket_id = "${var.bucket_name}"
+  bucket_domain_name = "${var.bucket_name}.s3.amazonaws.com"
+}
