@@ -14,7 +14,7 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 - route53_toplevel_zone      (existing top-level DNS domain for the Route53 record)
 ```
 
-* Note if you do not want Route 53 records created pointing to the cloudfront distribution you can optionally not pass in cloudfront_fqdn. In this case you must specify cloudfront_aliases.
+* Note if you do not want Route 53 records created pointing to the CloudFront distribution you can optionally not pass in `cloudfront_fqdn`. In this case you must specify `cloudfront_aliases` and ensure that the domain to be used for this CloudFront Distribution is allowed in the bucket CORS allowed origins (`bucket_cors_extra_allowed_origins`).
 
 * Note if you do not want to create/manage the S3 bucket (such as for the use case of having multiple CloudFront distributions sourced from different paths of the same S3 bucket), pass `create_bucket = false` (see below for details).
 
@@ -69,7 +69,7 @@ module "static_web" {
 }
 ```
 
-* Note if you do not want to create/manage the S3 bucket (such as for the use case of having multiple CloudFront distributions sourced from different paths of the same S3 bucket), set `create_bucket = false`. You will then need to pass in the `cloudfront_origin_access_identity_path` to the one created when you set up your S3 bucket (all CloudFronts pointing to this bucket must use same CloudFront Origin Access Identity). You should also setup CORS on the S3 bucket to allow all of the domains for the additional CloudFront distributions.
+* Note if you do not want to create/manage the S3 bucket (such as for the use case of having multiple CloudFront distributions sourced from different paths of the same S3 bucket), set `create_bucket = false`. You will then need to pass in the `cloudfront_origin_access_identity_path` to the one created when you set up your S3 bucket (all CloudFront distributions pointing to this bucket must use same CloudFront Origin Access Identity). You should also setup CORS on the S3 bucket to allow all of the domains for the additional CloudFront distributions.
 
 ```hcl
 
@@ -115,8 +115,8 @@ Authors
 Changelog
 =========
 
-0.0.1 - Initial version.
-0.0.4 - Allow not creating/managing the S3 bucket.
+- 0.0.1 - Initial version.
+- 0.0.4 - Allow not creating/managing the S3 bucket.
 
 License
 =======
