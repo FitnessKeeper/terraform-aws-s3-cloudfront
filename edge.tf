@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
     origin_path = "${var.cloudfront_origin_path}"
 
     s3_origin_config {
-      origin_access_identity = "${var.create_bucket ? join("", aws_cloudfront_origin_access_identity.identity.*.cloudfront_access_identity_path) : var.cloudfront_origin_access_identity_path}"
+      origin_access_identity = "${(var.cloudfront_origin_access_identity_path == "") ? join("", aws_cloudfront_origin_access_identity.identity.*.cloudfront_access_identity_path) : var.cloudfront_origin_access_identity_path}"
     }
   }
 

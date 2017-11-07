@@ -18,6 +18,10 @@ Terraform module for deploying and managing a CloudFront web distribution backed
 
 * Note if you do not want to create/manage the S3 bucket (such as for the use case of having multiple CloudFront distributions sourced from different paths of the same S3 bucket), pass `create_bucket = false` (see below for details).
 
+* Note if you do not want this module to create a CloudFront Origin Access Identity, you must pass in `cloudfront_origin_access_identity_path`. If you do still want it to create the S3 bucket, you must also pass in `cloudfront_origin_access_identity_iam_arn` (there is no Terraform AWS provider data source for CloudFront Origin Access Identity, so these can't be looked up).
+
+* Note, if you do not want this module to create the S3 bucket, but you do want it to create the CloudFront Origin Access Identity, it will output `cloudfront_origin_access_identity_path` and `cloudfront_origin_access_identity_iam_arn` so that you can add them to the bucket policy manually.
+
 #### Optional
 
 ```
@@ -25,6 +29,7 @@ Optional value                                            Default
 
 - create_bucket                                           true
 - cloudfront_origin_access_identity_path                  ""
+- cloudfront_origin_access_identity_iam_arn               ""
 - iam_policy_resources_path                               "/*"
 - bucket_acl                                              "private"
 - bucket_force_destroy                                    false
@@ -98,12 +103,11 @@ module "static2" {
 
 ```
 
-
-
 Outputs
 =======
 
 - cloudfront_origin_access_identity_path
+- cloudfront_origin_access_identity_iam_arn
 - cloudfront_domain_name
 - cloudfront_zone_id
 

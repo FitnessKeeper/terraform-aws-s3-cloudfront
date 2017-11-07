@@ -20,6 +20,12 @@ variable "cloudfront_origin_access_identity_path" {
   default = ""
 }
 
+variable "cloudfront_origin_access_identity_iam_arn" {
+  description = "CloudFront origin access identity iam_arn to use in the S3 bucket policy if not creating the CloudFront origin access identity"
+  type = "string"
+  default = ""
+}
+
 variable "s3_region" {
   type        = "string"
   description = "AWS region for S3 bucket"

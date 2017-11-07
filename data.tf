@@ -2,7 +2,7 @@
 
 
 resource "aws_cloudfront_origin_access_identity" "identity" {
-  count = "${var.create_bucket ? 1 : 0}"
+  count = "${(var.cloudfront_origin_access_identity_path == "") ? 1 : 0}"
   comment = "CloudFront access to S3 bucket ${var.bucket_name}"
 }
 
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.identity.iam_arn}"]
+      identifiers = ["${(var.cloudfront_origin_access_identity_path == "") ? aws_cloudfront_origin_access_identity.identity.iam_arn : var.cloudfront_origin_access_identity_iam_arn}"]
     }
   }
 
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.identity.iam_arn}"]
+      identifiers = ["${(var.cloudfront_origin_access_identity_path == "") ? aws_cloudfront_origin_access_identity.identity.iam_arn : var.cloudfront_origin_access_identity_iam_arn}"]
     }
   }
 }
@@ -51,6 +51,10 @@ resource "aws_s3_bucket" "bucket" {
 
 
 # outputs from data tier
+
+output "cloudfront_origin_access_identity_iam_arn" {
+  value = "${aws_cloudfront_origin_access_identity.identity.iam_arn}"
+}
 
 output "cloudfront_origin_access_identity_path" {
   value = "${aws_cloudfront_origin_access_identity.identity.cloudfront_access_identity_path}"
