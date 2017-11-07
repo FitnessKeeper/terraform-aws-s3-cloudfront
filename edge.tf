@@ -26,18 +26,15 @@ resource "aws_route53_record" "cloudfront_aaaa" {
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "identity" {
-  comment = "CloudFront access to S3 bucket ${var.bucket_name}"
-}
 
 resource "aws_cloudfront_distribution" "cloudfront" {
   origin {
-    domain_name = "${aws_s3_bucket.bucket.bucket_domain_name}"
-    origin_id   = "${aws_s3_bucket.bucket.id}"
+    domain_name = "${(var.create_bucket) ? join("", aws_s3_bucket.bucket.*.bucket_domain_name) : local.bucket_domain_name}"
+    origin_id   = "${var.create_bucket ? join("", aws_s3_bucket.bucket.*.id) : local.bucket_id}"
     origin_path = "${var.cloudfront_origin_path}"
 
     s3_origin_config {
-      origin_access_identity = "${aws_cloudfront_origin_access_identity.identity.cloudfront_access_identity_path}"
+      origin_access_identity = "${(var.cloudfront_origin_access_identity_path == "") ? join("", aws_cloudfront_origin_access_identity.identity.*.cloudfront_access_identity_path) : var.cloudfront_origin_access_identity_path}"
     }
   }
 
@@ -51,7 +48,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   default_cache_behavior {
     allowed_methods        = "${var.cloudfront_default_cache_allowed_methods}"
     cached_methods         = "${var.cloudfront_default_cache_cached_methods}"
-    target_origin_id       = "${aws_s3_bucket.bucket.id}"
+    target_origin_id       = "${var.create_bucket ? join("", aws_s3_bucket.bucket.*.id) : local.bucket_id}"
     compress               = "${var.cloudfront_default_cache_compress}"
     default_ttl            = "${var.cloudfront_default_cache_default_ttl}"
     max_ttl                = "${var.cloudfront_default_cache_max_ttl}"

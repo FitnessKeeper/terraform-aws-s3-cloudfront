@@ -9,6 +9,23 @@ variable "bucket_name" {
   type = "string"
 }
 
+variable "create_bucket" {
+  description = "Should this module create and manage this S3 bucket?"
+  default = true
+}
+
+variable "cloudfront_origin_access_identity_path" {
+  description = "CloudFront origin access identity path to use if not creating the S3 bucket"
+  type = "string"
+  default = ""
+}
+
+variable "cloudfront_origin_access_identity_iam_arn" {
+  description = "CloudFront origin access identity iam_arn to use in the S3 bucket policy if not creating the CloudFront origin access identity"
+  type = "string"
+  default = ""
+}
+
 variable "s3_region" {
   type        = "string"
   description = "AWS region for S3 bucket"
