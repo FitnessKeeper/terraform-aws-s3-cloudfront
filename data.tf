@@ -7,7 +7,6 @@ resource "aws_cloudfront_origin_access_identity" "identity" {
 }
 
 data "aws_iam_policy_document" "bucket_policy_document" {
-  count = "${var.create_bucket ? 1 : 0}"
   statement {
     sid       = "1"
     actions   = ["s3:GetObject"]
@@ -15,7 +14,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${(var.cloudfront_origin_access_identity_path == "") ? aws_cloudfront_origin_access_identity.identity.iam_arn : var.cloudfront_origin_access_identity_iam_arn}"]
+      identifiers = ["${(var.cloudfront_origin_access_identity_path == "") ? element(concat(aws_cloudfront_origin_access_identity.identity.*.iam_arn, list("")), 0) : var.cloudfront_origin_access_identity_iam_arn}"]
     }
   }
 
@@ -26,7 +25,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${(var.cloudfront_origin_access_identity_path == "") ? aws_cloudfront_origin_access_identity.identity.iam_arn : var.cloudfront_origin_access_identity_iam_arn}"]
+      identifiers = ["${(var.cloudfront_origin_access_identity_path == "") ? element(concat(aws_cloudfront_origin_access_identity.identity.*.iam_arn, list("")), 0) : var.cloudfront_origin_access_identity_iam_arn}"]
     }
   }
 }
@@ -53,9 +52,9 @@ resource "aws_s3_bucket" "bucket" {
 # outputs from data tier
 
 output "cloudfront_origin_access_identity_iam_arn" {
-  value = "${aws_cloudfront_origin_access_identity.identity.iam_arn}"
+  value = "${element(concat(aws_cloudfront_origin_access_identity.identity.*.iam_arn, list("")), 0)}"
 }
 
 output "cloudfront_origin_access_identity_path" {
-  value = "${aws_cloudfront_origin_access_identity.identity.cloudfront_access_identity_path}"
+  value = "${element(concat(aws_cloudfront_origin_access_identity.identity.*.cloudfront_access_identity_path, list("")), 0)}"
 }
