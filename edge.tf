@@ -43,7 +43,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   default_root_object = "${var.cloudfront_default_root_object}"
   aliases             = ["${compact(distinct(concat(list(var.cloudfront_fqdn),var.cloudfront_aliases)))}"]
   price_class         = "${var.cloudfront_price_class}"
-  web_acl_id          = "${var.create_waf_acl ? join("", aws_waf_web_acl.cloudfront.*.id) : ""}"
+  web_acl_id          = "${var.create_waf_acl ? element(concat(aws_waf_web_acl.cloudfront.*.id, list("")), 0) : ""}"
 
   default_cache_behavior {
     allowed_methods        = "${var.cloudfront_default_cache_allowed_methods}"
