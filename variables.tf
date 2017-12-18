@@ -1,23 +1,23 @@
 variable "bucket_name" {
   description = "Full name for S3 bucket"
-  type = "string"
+  type        = "string"
 }
 
 variable "create_bucket" {
   description = "Should this module create and manage this S3 bucket?"
-  default = true
+  default     = true
 }
 
 variable "cloudfront_origin_access_identity_path" {
   description = "CloudFront origin access identity path to use if not creating the S3 bucket"
-  type = "string"
-  default = ""
+  type        = "string"
+  default     = ""
 }
 
 variable "cloudfront_origin_access_identity_iam_arn" {
   description = "CloudFront origin access identity iam_arn to use in the S3 bucket policy if not creating the CloudFront origin access identity"
-  type = "string"
-  default = ""
+  type        = "string"
+  default     = ""
 }
 
 variable "s3_region" {
@@ -27,13 +27,13 @@ variable "s3_region" {
 
 variable "cloudfront_fqdn" {
   description = "FQDN for the cloudfront distribution"
-  type = "string"
-  default = ""
+  type        = "string"
+  default     = ""
 }
 
 variable "cloudfront_acm_cert_domain" {
   description = "ACM domain to lookup for cert for cloudfront web distribution"
-  type = "string"
+  type        = "string"
 }
 
 variable "route53_toplevel_zone" {
@@ -43,7 +43,7 @@ variable "route53_toplevel_zone" {
 
 variable "iam_policy_resources_path" {
   description = "path inside bucket for policy, default /*"
-  default = "/*"
+  default     = "/*"
 }
 
 variable "bucket_acl" {
@@ -63,12 +63,12 @@ variable "bucket_cors_allowed_methods" {
 }
 
 variable "bucket_cors_extra_allowed_origins" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "bucket_cors_expose_headers" {
-  type = "list"
+  type    = "list"
   default = ["ETag"]
 }
 
@@ -76,16 +76,15 @@ variable "bucket_cors_max_age_seconds" {
   default = 3000
 }
 
-
 # Cloudfront
 
 variable "cloudfront_origin_path" {
   description = "Optional path inside bucket to request resources from"
-  default = ""
+  default     = ""
 }
 
 variable "cloudfront_comment" {
-  type = "string"
+  type    = "string"
   default = ""
 }
 
@@ -94,7 +93,7 @@ variable "cloudfront_default_root_object" {
 }
 
 variable "cloudfront_aliases" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
@@ -132,7 +131,7 @@ variable "cloudfront_default_cache_viewer_protocol_policy" {
 
 variable "cloudfront_default_cache_forwarded_values_query_string" {
   description = "Indicates whether you want CloudFront to forward query strings to the origin that is associated with this cache behavior."
-  default = false
+  default     = false
 }
 
 variable "cloudfront_default_cache_forwarded_cookies" {
@@ -157,4 +156,12 @@ variable "cloudfront_enabled" {
 
 variable "cloudfront_ipv6_enabled" {
   default = true
+}
+
+variable "create_waf_acl" {
+  default = false
+}
+
+variable "waf_acl_default_action" {
+  default = "ALLOW"
 }

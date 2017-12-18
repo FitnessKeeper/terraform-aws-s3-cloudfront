@@ -26,7 +26,6 @@ resource "aws_route53_record" "cloudfront_aaaa" {
   }
 }
 
-
 resource "aws_cloudfront_distribution" "cloudfront" {
   origin {
     domain_name = "${(var.create_bucket) ? join("", aws_s3_bucket.bucket.*.bucket_domain_name) : local.bucket_domain_name}"
@@ -44,6 +43,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   default_root_object = "${var.cloudfront_default_root_object}"
   aliases             = ["${compact(distinct(concat(list(var.cloudfront_fqdn),var.cloudfront_aliases)))}"]
   price_class         = "${var.cloudfront_price_class}"
+  web_acl_id          = "${var.create_waf_acl ? join("", aws_waf_web_acl.cloudfront.*.id) : ""}"
 
   default_cache_behavior {
     allowed_methods        = "${var.cloudfront_default_cache_allowed_methods}"
@@ -77,6 +77,16 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
 }
 
+resource "aws_waf_web_acl" "cloudfront" {
+  count       = "${var.create_waf_acl ? 1 : 0}"
+  name        = "acl_${var.cloudfront_fqdn}"
+  # CloudWatch metric names have strict restrictions on acceptable characters
+  metric_name = "${replace("acl${var.cloudfront_fqdn}", "/[^[:alnum:]]/", "")}"
+
+  default_action {
+    type = "${var.waf_acl_default_action}"
+  }
+}
 
 # outputs from edge tier
 
@@ -86,4 +96,8 @@ output "cloudfront_domain_name" {
 
 output "cloudfront_id" {
   value = "${aws_cloudfront_distribution.cloudfront.id}"
+}
+
+output "cloudfront_waf_acl_id" {
+  value = "${element(concat(aws_waf_web_acl.cloudfront.*.id, list("")), 0)}"
 }
