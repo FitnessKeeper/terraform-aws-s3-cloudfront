@@ -57,6 +57,8 @@ Optional value                                            Default
 - cloudfront_cert_ssl_support_method                      "sni-only"
 - cloudfront_enabled                                      true
 - cloudfront_ipv6_enabled                                 true
+- create_waf_acl                                          false
+- waf_acl_default_action                                  "ALLOW"
 ```
 
 Usage
@@ -110,11 +112,13 @@ Outputs
 - cloudfront_origin_access_identity_iam_arn
 - cloudfront_domain_name
 - cloudfront_zone_id
+- cloudfront_waf_acl_id
 
 Authors
 =======
 
 [John Noss](https://github.com/jnoss)
+[Steve Huff](https://github.com/hakamadare)
 
 Changelog
 =========

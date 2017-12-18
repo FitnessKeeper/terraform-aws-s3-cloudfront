@@ -1,11 +1,11 @@
 # MAIN
 
 provider "aws" {
-  alias   = "us-east-1"
+  alias = "us-east-1"
 }
 
 provider "aws" {
-  alias   = "s3"
+  alias = "s3"
 }
 
 data "aws_region" "us-east-1" {
@@ -27,6 +27,6 @@ data "aws_acm_certificate" "cloudfront" {
 }
 
 locals {
-  bucket_id = "${var.bucket_name}"
+  bucket_id          = "${var.bucket_name}"
   bucket_domain_name = "${var.bucket_name}.s3.amazonaws.com"
 }
