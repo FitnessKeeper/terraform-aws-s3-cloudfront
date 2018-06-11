@@ -50,6 +50,7 @@ Optional value                                            Default
 - cloudfront_default_cache_max_ttl                        0
 - cloudfront_default_cache_min_ttl                        0
 - cloudfront_default_cache_viewer_protocol_policy         "redirect-to-https"
+- cloudfront_default_cache_forwarded_values_headers       ["*"]
 - cloudfront_default_cache_forwarded_values_query_string  false
 - cloudfront_default_cache_forwarded_cookies              "all"
 - cloudfront_geo_restriction_type                         "none"
