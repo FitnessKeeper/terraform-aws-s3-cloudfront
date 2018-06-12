@@ -57,6 +57,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
     forwarded_values {
       query_string = "${var.cloudfront_default_cache_forwarded_values_query_string}"
+      headers      = ["${var.cloudfront_default_cache_forwarded_values_headers}"]
 
       cookies {
         forward = "${var.cloudfront_default_cache_forwarded_cookies}"

@@ -129,6 +129,12 @@ variable "cloudfront_default_cache_viewer_protocol_policy" {
   default = "redirect-to-https"
 }
 
+variable "cloudfront_default_cache_forwarded_values_headers" {
+  type        = "list"
+  description = "List of Headers that you want CloudFront to vary upon for this cache behavior. Specify a single item of '*' to include all headers."
+  default     = []
+}
+
 variable "cloudfront_default_cache_forwarded_values_query_string" {
   description = "Indicates whether you want CloudFront to forward query strings to the origin that is associated with this cache behavior."
   default     = false
