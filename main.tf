@@ -25,9 +25,9 @@ data "aws_route53_zone" "zone" {
 }
 
 data "aws_acm_certificate" "cloudfront" {
-  provider = "aws.us-east-1"
-  domain   = "${var.cloudfront_acm_cert_domain}"
-  statuses = ["ISSUED"]
+  provider    = "aws.us-east-1"
+  domain      = "${var.cloudfront_acm_cert_domain}"
+  statuses    = ["ISSUED"]
   most_recent = true
 }
 
