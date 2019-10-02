@@ -1,6 +1,6 @@
 variable "bucket_name" {
   description = "Full name for S3 bucket"
-  type        = "string"
+  type        = string
 }
 
 variable "create_bucket" {
@@ -10,35 +10,35 @@ variable "create_bucket" {
 
 variable "cloudfront_origin_access_identity_path" {
   description = "CloudFront origin access identity path to use if not creating the S3 bucket"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "cloudfront_origin_access_identity_iam_arn" {
   description = "CloudFront origin access identity iam_arn to use in the S3 bucket policy if not creating the CloudFront origin access identity"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "s3_region" {
-  type        = "string"
+  type        = string
   description = "AWS region for S3 bucket"
 }
 
 variable "cloudfront_fqdn" {
   description = "FQDN for the cloudfront distribution"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "cloudfront_acm_cert_domain" {
   description = "ACM domain to lookup for cert for cloudfront web distribution"
-  type        = "string"
+  type        = string
 }
 
 variable "route53_toplevel_zone" {
   description = "The top level zone for DNS"
-  type        = "string"
+  type        = string
 }
 
 variable "iam_policy_resources_path" {
@@ -63,12 +63,12 @@ variable "bucket_cors_allowed_methods" {
 }
 
 variable "bucket_cors_extra_allowed_origins" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "bucket_cors_expose_headers" {
-  type    = "list"
+  type    = list(string)
   default = ["ETag"]
 }
 
@@ -84,7 +84,7 @@ variable "cloudfront_origin_path" {
 }
 
 variable "cloudfront_comment" {
-  type    = "string"
+  type    = string
   default = ""
 }
 
@@ -93,7 +93,7 @@ variable "cloudfront_default_root_object" {
 }
 
 variable "cloudfront_aliases" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
@@ -130,7 +130,7 @@ variable "cloudfront_default_cache_viewer_protocol_policy" {
 }
 
 variable "cloudfront_default_cache_forwarded_values_headers" {
-  type        = "list"
+  type        = list(string)
   description = "List of Headers that you want CloudFront to vary upon for this cache behavior. Specify a single item of '*' to include all headers."
   default     = []
 }
@@ -171,3 +171,4 @@ variable "create_waf_acl" {
 variable "waf_acl_default_action" {
   default = "ALLOW"
 }
+
