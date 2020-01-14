@@ -1,3 +1,9 @@
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile to use when managing resources"
+  default     = "default"
+}
+
 variable "bucket_name" {
   description = "Full name for S3 bucket"
   type        = string
@@ -171,4 +177,3 @@ variable "create_waf_acl" {
 variable "waf_acl_default_action" {
   default = "ALLOW"
 }
-
