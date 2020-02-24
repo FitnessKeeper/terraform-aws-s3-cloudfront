@@ -2,14 +2,10 @@
 
 provider "aws" {
   alias   = "us-east-1"
-  profile = var.aws_profile
-  region  = "us-east-1"
 }
 
 provider "aws" {
   alias   = "s3"
-  profile = var.aws_profile
-  region  = var.s3_region
 }
 
 data "aws_region" "us-east-1" {
