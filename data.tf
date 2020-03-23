@@ -89,3 +89,7 @@ output "cloudfront_origin_access_identity_path" {
   )
 }
 
+output "s3_bucket_name" {
+  value = aws_s3_bucket.bucket.id
+}
+
