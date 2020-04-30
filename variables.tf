@@ -8,6 +8,8 @@ variable "create_bucket" {
   default     = true
 }
 
+variable "standard_tags" {}
+
 variable "cloudfront_origin_access_identity_path" {
   description = "CloudFront origin access identity path to use if not creating the S3 bucket"
   type        = string

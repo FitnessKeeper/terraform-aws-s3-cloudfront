@@ -81,6 +81,8 @@ resource "aws_cloudfront_distribution" "cloudfront" {
     minimum_protocol_version = var.cloudfront_cert_min_supported_version
     ssl_support_method       = var.cloudfront_cert_ssl_support_method
   }
+
+  tags = var.standard_tags
 }
 
 resource "aws_waf_web_acl" "cloudfront" {
@@ -93,6 +95,8 @@ resource "aws_waf_web_acl" "cloudfront" {
   default_action {
     type = var.waf_acl_default_action
   }
+
+  tags = var.standard_tags
 }
 
 # outputs from edge tier
@@ -108,4 +112,3 @@ output "cloudfront_id" {
 output "cloudfront_waf_acl_id" {
   value = element(concat(aws_waf_web_acl.cloudfront.*.id, [""]), 0)
 }
-
