@@ -65,6 +65,8 @@ resource "aws_s3_bucket" "bucket" {
     expose_headers  = var.bucket_cors_expose_headers
     max_age_seconds = var.bucket_cors_max_age_seconds
   }
+
+  tags = var.standard_tags
 }
 
 # outputs from data tier
@@ -92,4 +94,3 @@ output "cloudfront_origin_access_identity_path" {
 output "s3_bucket_name" {
   value = aws_s3_bucket.bucket.id
 }
-
